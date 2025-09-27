@@ -12,17 +12,21 @@ export default function Header() {
   const [userEmail, setUserEmail] = useState('')
 
   useEffect(() => {
-    const email = localStorage.getItem('userEmail')
-    const name = localStorage.getItem('userName')
-    if (email && name) {
-      setIsLoggedIn(true)
-      setUserEmail(email)
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('userEmail')
+      const name = localStorage.getItem('userName')
+      if (email && name) {
+        setIsLoggedIn(true)
+        setUserEmail(email)
+      }
     }
   }, [])
 
   const handleLogout = () => {
-    localStorage.removeItem('userEmail')
-    localStorage.removeItem('userName')
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userEmail')
+      localStorage.removeItem('userName')
+    }
     setIsLoggedIn(false)
     setUserEmail('')
   }

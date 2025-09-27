@@ -32,8 +32,10 @@ export default function LoginPage() {
       // Mock authentication - in real app, validate with backend
       if (formData.email === 'demo@carrental.com' && formData.password === 'demo123') {
         // Save user session
-        localStorage.setItem('userEmail', formData.email)
-        localStorage.setItem('userName', 'Demo User')
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('userEmail', formData.email)
+          localStorage.setItem('userName', 'Demo User')
+        }
         
         // Redirect to return URL
         router.push(returnUrl)

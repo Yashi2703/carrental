@@ -16,10 +16,10 @@ export default function CarsPage() {
   const [filteredCars, setFilteredCars] = useState<Car[]>([])
   const [currentPage, setCurrentPage] = useState(1)
   const [filters, setFilters] = useState<SearchFilters>({
-    location: searchParams.get('location') || '',
-    pickupDate: searchParams.get('pickupDate') || '',
-    returnDate: searchParams.get('returnDate') || '',
-    keyword: searchParams.get('keyword') || '',
+    location: '',
+    pickupDate: '',
+    returnDate: '',
+    keyword: '',
     model: '',
     priceRange: [0, 1000],
     year: 0,
@@ -28,10 +28,28 @@ export default function CarsPage() {
     sortBy: 'newest'
   })
   const [showFilters, setShowFilters] = useState(false)
+  const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
     setCars(getCars())
-  }, [])
+    setIsClient(true)
+    
+    // Initialize filters from URL params after client-side hydration
+    if (searchParams) {
+      setFilters({
+        location: searchParams.get('location') || '',
+        pickupDate: searchParams.get('pickupDate') || '',
+        returnDate: searchParams.get('returnDate') || '',
+        keyword: searchParams.get('keyword') || '',
+        model: '',
+        priceRange: [0, 1000],
+        year: 0,
+        transmission: '',
+        seats: 0,
+        sortBy: 'newest'
+      })
+    }
+  }, [searchParams])
 
   useEffect(() => {
     let filtered = [...cars]
@@ -102,6 +120,17 @@ export default function CarsPage() {
       seats: 0,
       sortBy: 'newest'
     })
+  }
+
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading cars...</p>
+        </div>
+      </div>
+    )
   }
 
   return (

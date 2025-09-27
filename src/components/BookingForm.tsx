@@ -31,18 +31,20 @@ export default function BookingForm({ car, onClose }: BookingFormProps) {
 
   useEffect(() => {
     // Check if user is logged in
-    const email = localStorage.getItem('userEmail')
-    const name = localStorage.getItem('userName')
-    
-    if (email && name) {
-      setIsLoggedIn(true)
-      setUserEmail(email)
-      setUserName(name)
-      setBookingData(prev => ({
-        ...prev,
-        customerEmail: email,
-        customerName: name
-      }))
+    if (typeof window !== 'undefined') {
+      const email = localStorage.getItem('userEmail')
+      const name = localStorage.getItem('userName')
+      
+      if (email && name) {
+        setIsLoggedIn(true)
+        setUserEmail(email)
+        setUserName(name)
+        setBookingData(prev => ({
+          ...prev,
+          customerEmail: email,
+          customerName: name
+        }))
+      }
     }
   }, [])
 
@@ -127,7 +129,9 @@ export default function BookingForm({ car, onClose }: BookingFormProps) {
       await new Promise(resolve => setTimeout(resolve, 1000))
       
       // Save user email for future bookings (optional login)
-      localStorage.setItem('userEmail', bookingData.customerEmail)
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('userEmail', bookingData.customerEmail)
+      }
       
       // In a real app, you would POST to /api/bookings
       console.log('Booking request:', bookingRequest)

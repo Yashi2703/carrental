@@ -81,21 +81,25 @@ export default function BookingsPage() {
 
   useEffect(() => {
     // Check if user is logged in
-    const userEmail = localStorage.getItem('userEmail')
-    const userName = localStorage.getItem('userName')
-    setIsLoggedIn(!!(userEmail && userName))
-    
-    // Simulate loading
-    setTimeout(() => {
-      if (userEmail && userName) {
-        // Show user's bookings
-        setBookings(mockBookings)
-      } else {
-        // Show empty state
-        setBookings([])
-      }
+    if (typeof window !== 'undefined') {
+      const userEmail = localStorage.getItem('userEmail')
+      const userName = localStorage.getItem('userName')
+      setIsLoggedIn(!!(userEmail && userName))
+      
+      // Simulate loading
+      setTimeout(() => {
+        if (userEmail && userName) {
+          // Show user's bookings
+          setBookings(mockBookings)
+        } else {
+          // Show empty state
+          setBookings([])
+        }
+        setIsLoading(false)
+      }, 1000)
+    } else {
       setIsLoading(false)
-    }, 1000)
+    }
   }, [])
 
   const formatDate = (dateString: string) => {
