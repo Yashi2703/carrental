@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams, useSearchParams } from 'next/navigation'
+import { useParams } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Calendar, Users, Fuel, Settings, MapPin, Star, ChevronLeft, ChevronRight } from 'lucide-react'
@@ -12,7 +12,7 @@ import ImageGallery from '@/components/ImageGallery'
 
 export default function CarDetailPage() {
   const params = useParams()
-  const searchParams = useSearchParams()
+//   const searchParams = useSearchParams()
   const [car, setCar] = useState<Car | null>(null)
   const [showBookingForm, setShowBookingForm] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
@@ -23,10 +23,10 @@ export default function CarDetailPage() {
     setCar(carData || null)
     
     // Check if booking form should be shown
-    if (searchParams.get('booking') === 'true') {
-      setShowBookingForm(true)
-    }
-  }, [params.id, searchParams])
+    // if (searchParams.get('booking') === 'true') {
+    //   setShowBookingForm(true)
+    // }
+  }, [params.id])
 
   if (!car) {
     return (
